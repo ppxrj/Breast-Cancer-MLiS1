@@ -1,3 +1,7 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
+
 #Plan:class separation, shuffle in each class, split into class, merge, shuffle merged
 np.random.seed(42)
 
@@ -37,3 +41,31 @@ X_test= X.loc[test_set]
 y_test= y_encoded.loc[test_set]
 print("Train shape:", X_train.shape, y_train.shape) #(910, 30) (910, 1)
 print("Test shape:", X_test.shape, y_test.shape) #(228, 30) (228, 1)
+
+#CODE CHECK
+print("X set", X_train.shape, X_test.shape)
+print("Y set", y_train.shape, y_test.shape)
+print("Training distribution",y_train.value_counts(), y_train.value_counts(normalize=True)*100)
+print("Testing distribution",y_test.value_counts(), y_test.value_counts(normalize=True)*100)
+
+# SCALING
+train_mean= X_train.mean()
+train_std= X_train.std()
+print("Train mean", train_mean)
+print("Train std", train_std)
+
+X_train_scaled= (X_train - train_mean)/ train_std
+X_test_scaled= (X_test - train_mean)/ train_std # standarised using train mean and std
+
+# Convert scaled pandas DataFrames to NumPy arrays
+X_train_np = X_train_scaled.values
+X_test_np  = X_test_scaled.values
+
+y_train_np = y_train.values.ravel()
+y_test_np  = y_test.values.ravel()
+
+print("Scaled training set", X_train_scaled.mean())
+print("Scaled testing set", X_test_scaled.mean())
+print("Scaled training set std", X_train_scaled.std())  #all std=1
+print("Scaled testing set std", X_test_scaled.std())  #close to 1
+print("Shape", X_train_scaled.shape, X_test_scaled.shape)
