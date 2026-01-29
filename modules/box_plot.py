@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
 feature_list=['radius','texture', 'perimeter', 'area', 'smoothness', 'compactness', 'concavity', 'concave_points', 'symmetry', 'fractal_dimension']
 fig, axes= plt.subplots(5,2, figsize=(12,12))
 axes= axes.flatten()

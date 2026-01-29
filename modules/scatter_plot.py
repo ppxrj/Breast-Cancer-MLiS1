@@ -1,3 +1,7 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
 # Regression= scatter plot
 feature_list=['radius','texture', 'perimeter', 'area', 'smoothness', 'compactness', 'concavity', 'concave_points', 'symmetry', 'fractal_dimension']
 fig, axes= plt.subplots(10,3, figsize=(15,25))
