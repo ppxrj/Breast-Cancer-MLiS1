@@ -1,5 +1,5 @@
-1) statistics
+1) statistics- fixed, just need to save them
 2) layout #
-3) remove end 
+3) remove end- done
 4) code ref
-5) LaTEx report
+5) LaTex report
