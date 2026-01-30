@@ -1,5 +1,30 @@
 \section{Main}
 
-Within supervised machine Learning (SL) tasks are categorised as regression or classification. Given the nature of the data set, this is a classification problem and will use accuracy as a performance measure.
 
-The data set was cleansed to find duplicates, null values, and anomalies. 
+Within supervised machine Learning (SL) tasks are categorised as regression or classification. Given the nature of the data set, this is a classification problem and will use accuracy as a performance measure (PM). 
+
+The data set was cleansed to find duplicates, null values, and anomalies. Anomalies were kept to represent extreme values within medical data and misdiagnose patients-especially false negatives. A correlation analysis showed multicollinearity between the size features \ref{fig:Corr}. The target variable \(y \in [0,1]\) were encoded. The features were standardised by using the z with the mean and standard deviation and then randomly stratified 80-20 (\(n_{test}=144, n_{train}=48.\)) to maintain balance between training and test series. 
+
+Four algorithms were compared: logistic regression, K-Nearest Neighbour (KNN), support vector machine (SVM), and decision tree. The algorithms were used to learn mapping of the input \(s.t \space f:\Re^{30} \rightarrow [0,1]\). 
+
+Logistic regression uses the sigmoid function to model probability. The parameters were optimised by minimising cross-entropy \[J(w)= -\frac{1}{n} \sum y^{i}log(\hat{y}^{i}) +(1-y)log(1-\hat{y^{i}})+\epsilon\] with gradient descent. From the initial analysis of the features, most of the data follows a normal distribution and a binary classification \cite{lecturenotes}, a Gaussian model was used to predict the probabilities.
+
+To find the optimal linear hyperplane, we use SVM to minimise the margin between classes. The algorithm finds the optimal hyperplane by solving \[min_{w,b}\frac{1}{2}||w||^2\] and classifying points s.t \(y_i(w·x_i + b) \space \forall i\). However, there are constraints (margins=\(\alpha\)) so a Lagrange multiplier is applied to cancel slack variables, errors be equally distributed between the positive and negative values and find the support vector (\(\alpha \gt 0\)).
+
+KNN assigns labels to the nearest training sample by Euclidean distance and assigns new points to class with majority amongst it's neighbours. The prediction is therefore, \[\hat{y}= mode \{y^i : x^i \in N_k(x)\}\] where N is the set with the \(k\) nearest neighbours.
+
+The decision tree continuously splits the features into branches to maximise the information gained which can be defined as \(IG= H(S)-H(S|feature)\), where the entropy of \[H(S)= -\sum p_{i}log_{2}p_{i}.\]
+
+
+For PM we consider the loss function \[L_D =\frac{1}{N}\sum l(\hat{y}^{i}, y^i).\]
+
+% Graphs and details here
+The hyper-parameters were optimised comparing a grid search, ...
+%
+Performance was calculated via confusion matrices to tabulate true positives, true negatives, false positives (benign classified as malignant) and false negatives (malignant classified as benign).
+
+The accuracy measures overall correctness and, calculated the correct prediction across all samples. Precision indicates the proportion of malignant that were actually malignant. Recall is the key measure as false negatives have a direct impact and leave cancer patients untreated. Recall was used to check the model's ability to identify all malignant cases. The F-1 score balances precision and recall for uneven data.
+
+Missing malignant (FN) is a bigger risk than missing benign. Therefore, the aim was to maximise recall because they hold greater importance than the other metrics.
+
+
