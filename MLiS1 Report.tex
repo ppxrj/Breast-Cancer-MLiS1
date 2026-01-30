@@ -1,6 +1,6 @@
-\documentclass[prl,showpacs,scriptaddress,twocolumn,longbibliography]{revtex4-1}
-\usepackage{hyperref}
-\usepackage[usenames,dvipsnames]{xcolor}
+\documentclass[aps,prl,showpacs,superscriptaddress,twocolumn,longbibliography,10pt]{revtex4-1}
+
+\usepackage[dvipsnames]{xcolor}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{mathtools}
 \usepackage{graphicx}
@@ -11,11 +11,14 @@
 \usepackage{multirow}
 \usepackage{enumerate}
 
-\title{MLis1 Final}
-\author{Ramona J}
-\date{January 2026}
+\usepackage{hyperref}
 
 \begin{document}
+\title{Classification of Breast Cancer Tumors using Supervised Learning}
+
+\author{Ramona Jha}
+\author{Kamille Nguefo Kowo}
+\affiliation{School of Physics and Astronomy, University of Nottingham}
 
 \maketitle
 
@@ -23,6 +26,8 @@
 \input{LaTex_sections/Main.tex}
 \input{LaTex_sections/Conclusion.tex}
 
+\nocite{*}
+\bibliographystyle{apsrev4-1}
 \bibliography{references}
 
 \end{document}
