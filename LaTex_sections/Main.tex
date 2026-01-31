@@ -1,9 +1,8 @@
-\section{Main}
+\section{Method}
 
+Within supervised machine Learning (SL), tasks are categorised as regression or classification. Given the nature of the data set, this is a classification problem and will use accuracy as a performance measure (PM). 
 
-Within supervised machine Learning (SL) tasks are categorised as regression or classification. Given the nature of the data set, this is a classification problem and will use accuracy as a performance measure (PM). 
-
-The data set was cleansed to find duplicates, null values, and anomalies. Anomalies were kept to represent extreme values within medical data and misdiagnose patients-especially false negatives. A correlation analysis showed multicollinearity between the size features \ref{fig:Corr}. The target variable \(y \in [0,1]\) were encoded. The features were standardised by using the z with the mean and standard deviation and then randomly stratified 80-20 (\(n_{test}=144, n_{train}=48.\)) to maintain balance between training and test series. 
+The data set was cleaned to find duplicates, null values, and anomalies. The anomalies were kept to represent extreme values within medical data and misdiagnose patients-especially false negatives. A correlation analysis showed multicollinearity between the size features \ref{fig:Corr}. The target variable \(y \in [0,1]\) was encoded. The features were standardised using the z with the mean and standard deviation and then randomly stratified 80-20 (\(n_{test}=144, n_{train}=48.\)) to maintain the balance between training and test series. 
 
 Four algorithms were compared: logistic regression, K-Nearest Neighbour (KNN), support vector machine (SVM), and decision tree. The algorithms were used to learn mapping of the input \(s.t \space f:\Re^{30} \rightarrow [0,1]\). 
 
@@ -18,13 +17,20 @@ The decision tree continuously splits the features into branches to maximise the
 
 For PM we consider the loss function \[L_D =\frac{1}{N}\sum l(\hat{y}^{i}, y^i).\]
 
+\section{Optimisation}
 % Graphs and details here
-The hyper-parameters were optimised comparing a grid search, ...
-%
-Performance was calculated via confusion matrices to tabulate true positives, true negatives, false positives (benign classified as malignant) and false negatives (malignant classified as benign).
+The hyper-parameters was optimised using a grid search. The decision tree used 45 combinations with the highest accuracy of 93.81\% with a low depth of 6 and moderate split of 10 to prevent overfitting. KNN used 16 combinations with an accuracy of 97.35\% with a the nearest neighbour \(k=1\). The results showed that the Manhattan distance was more efficient than the Euclidean distance. This is because absolute difference reduces the impact of extreme values and Manhattan performs better in higher dimensions. Logistic regression had 48 combinations with accuracy of 97.35\%. The learning rate was moderate (0.05) but small regularisation (0.001) and maximum iteration of 2000. 
+SVM used 36 combinations with 98.23\% accuracy with a very small learning rate and moderate accuracy of parameters and iterations. SVM had the best performance overall ....
+%perfomance image
+
+Performance was calculated via confusion matrices to tabulate 67 true positives and 44 true negatives. This ensures that benign cases avoid unnecessary procedures and true malignant cases receive treatment. The model showed 0 false positives (benign classified as malignant) and 2 false negatives (malignant classified as benign). 
+
+Missing malignant (FN) is a bigger risk than missing benign. Therefore, the aim is to maximise recall because they hold greater importance than the other metrics. 2 false negatives are concerning as misdiagnosis may cause patients to not receive treatment in time, and become life threatening. Hence, the model is not accurate enough to be used for diagnosis but serve as screening.
 
 The accuracy measures overall correctness and, calculated the correct prediction across all samples. Precision indicates the proportion of malignant that were actually malignant. Recall is the key measure as false negatives have a direct impact and leave cancer patients untreated. Recall was used to check the model's ability to identify all malignant cases. The F-1 score balances precision and recall for uneven data.
 
-Missing malignant (FN) is a bigger risk than missing benign. Therefore, the aim was to maximise recall because they hold greater importance than the other metrics.
+Through the feature analysis, the model suggests concave points 3 played the biggest factor in classifying benign and malignant cells. T
+
+
 
 
