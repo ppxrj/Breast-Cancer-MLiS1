@@ -10,6 +10,7 @@ The notes page is just a log so we know what to do next and what we need to pick
 python -m venv venv
 venv\Scripts\activate
 .\venv\Scripts\python.exe #if first install
+exit()
 pip install -r requirements.txt
 
 # Exam details
