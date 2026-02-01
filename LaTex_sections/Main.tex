@@ -1,3 +1,4 @@
+\usepackage{wrapfig}
 \section{Method}
 
 Within supervised machine Learning (SL), tasks are categorised as regression or classification. Given the nature of the data set, this is a classification problem and will use accuracy as a performance measure (PM). 
@@ -6,31 +7,32 @@ The data set was cleaned to find duplicates, null values, and anomalies. The ano
 
 Four algorithms were compared: logistic regression, K-Nearest Neighbour (KNN), support vector machine (SVM), and decision tree. The algorithms were used to learn mapping of the input \(s.t \space f:\Re^{30} \rightarrow [0,1]\). 
 
-Logistic regression uses the sigmoid function to model probability. The parameters were optimised by minimising cross-entropy \[J(w)= -\frac{1}{n} \sum y^{i}log(\hat{y}^{i}) +(1-y)log(1-\hat{y^{i}})+\epsilon\] with gradient descent. From the initial analysis of the features, most of the data follows a normal distribution and a binary classification \cite{lecturenotes}, a Gaussian model was used to predict the probabilities.
+Logistic regression uses the sigmoid function to model probability. The parameters were optimised by minimising cross-entropy \[J(w)= -\frac{1}{n} \sum y^{i}log(\hat{y}^{i}) +(1-y)log(1-\hat{y^{i}})+\epsilon\] with gradient descent. From the initial analysis of the features, most of the data follows a normal distribution and a binary classification \cite{lecturenotes}, a Gaussian model was used to predict the probabilities. The probabilities give confidence scores and can be used to help doctors make decisions. Since the data is binary classification (benign and malignant) the model can produce a linear boundary and weighted combination of features for breast cancer can separate classes.
 
-To find the optimal linear hyperplane, we use SVM to minimise the margin between classes. The algorithm finds the optimal hyperplane by solving \[min_{w,b}\frac{1}{2}||w||^2\] and classifying points s.t \(y_i(w·x_i + b) \space \forall i\). However, there are constraints (margins=\(\alpha\)) so a Lagrange multiplier is applied to cancel slack variables, errors be equally distributed between the positive and negative values and find the support vector (\(\alpha \gt 0\)).
+To find the optimal linear hyperplane, we use SVM to minimise the margin between classes. The algorithm finds the optimal hyperplane by solving \[min_{w,b}\frac{1}{2}||w||^2\] and classifying points s.t \(y_i(w·x_i + b) \space \forall i\). However, there are constraints (margins=\(\alpha\)) so a Lagrange multiplier is applied to cancel slack variables, errors be equally distributed between the positive and negative values and find the support vector (\(\alpha \gt 0\)). SVM was used because there are 30 features (high dimension) and 2 distinct classes. SVM ignores anomalies and focuses on support vectors, which produces more conservative boundaries.
 
-KNN assigns labels to the nearest training sample by Euclidean distance and assigns new points to class with majority amongst it's neighbours. The prediction is therefore, \[\hat{y}= mode \{y^i : x^i \in N_k(x)\}\] where N is the set with the \(k\) nearest neighbours.
+KNN assigns labels to the nearest training sample by Euclidean distance and assigns new points to class with majority amongst it's neighbours. The prediction is therefore, \[\hat{y}= mode \{y^i : x^i \in N_k(x)\}\] where N is the set with the \(k\) nearest neighbours. KNN requires not training or assumption hence a good model to use. The features are independent since the data follows a Gaussian distribution so the classes are separated well enough to form distinct clusters. 
 
-The decision tree continuously splits the features into branches to maximise the information gained which can be defined as \(IG= H(S)-H(S|feature)\), where the entropy of \[H(S)= -\sum p_{i}log_{2}p_{i}.\]
-
-
-For PM we consider the loss function \[L_D =\frac{1}{N}\sum l(\hat{y}^{i}, y^i).\]
+The decision tree continuously splits the features into branches to maximise the information gained which can be defined as \(IG= H(S)-H(S|feature)\), where the entropy of \[H(S)= -\sum p_{i}log_{2}p_{i}.\] Decision trees does not require scaling and follow a similar decision pattern of doctors, therefore, can be used to highlight important features that indicate cancerous cells.
 
 \section{Optimisation}
 % Graphs and details here
-The hyper-parameters was optimised using a grid search. The decision tree used 45 combinations with the highest accuracy of 93.81\% with a low depth of 6 and moderate split of 10 to prevent overfitting. KNN used 16 combinations with an accuracy of 97.35\% with a the nearest neighbour \(k=1\). The results showed that the Manhattan distance was more efficient than the Euclidean distance. This is because absolute difference reduces the impact of extreme values and Manhattan performs better in higher dimensions. Logistic regression had 48 combinations with accuracy of 97.35\%. The learning rate was moderate (0.05) but small regularisation (0.001) and maximum iteration of 2000. 
-SVM used 36 combinations with 98.23\% accuracy with a very small learning rate and moderate accuracy of parameters and iterations. SVM had the best performance overall ....
-%perfomance image
+The hyper-parameters was optimised using a grid search. The decision tree used 45 combinations with the highest accuracy of 93.81\% with a low depth of 6 and moderate split of 10 to prevent over fitting because no improvements were found with increased depth. KNN used 16 combinations with an accuracy of 97.35\% with a the nearest neighbour \(k=1\). The results showed that the Manhattan distance was more efficient than the Euclidean distance. This is because absolute difference reduces the impact of extreme values and Manhattan performs better in higher dimensions. More neighbours reduced accuracy and added more noise since the data set has clear separation of benign and malignant. Logistic regression had 48 combinations with accuracy of 97.35\%. The learning rate was moderate (0.05) but small regularisation (0.001) and maximum iteration of 2000. A low learning rate produced slow convergence and a high learning rate may produce inaacurate results in other datasets due to over fitting.
+SVM used 36 combinations with 98.23\% accuracy with a very small learning rate and moderate accuracy of parameters and iterations. SVM had the best performance overall, as shown in figure 2, whilst the decision tree performed worst but useful in measuring which features are important.
+
+\begin{wrapfigure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{Images/Classification Model Graphs.png}
+    \caption{Figure 2: Model Performance}
+    \label{fig:Corr}
+\end{wrapfigure}
+\newline
 
 Performance was calculated via confusion matrices to tabulate 67 true positives and 44 true negatives. This ensures that benign cases avoid unnecessary procedures and true malignant cases receive treatment. The model showed 0 false positives (benign classified as malignant) and 2 false negatives (malignant classified as benign). 
 
 Missing malignant (FN) is a bigger risk than missing benign. Therefore, the aim is to maximise recall because they hold greater importance than the other metrics. 2 false negatives are concerning as misdiagnosis may cause patients to not receive treatment in time, and become life threatening. Hence, the model is not accurate enough to be used for diagnosis but serve as screening.
 
-The accuracy measures overall correctness and, calculated the correct prediction across all samples. Precision indicates the proportion of malignant that were actually malignant. Recall is the key measure as false negatives have a direct impact and leave cancer patients untreated. Recall was used to check the model's ability to identify all malignant cases. The F-1 score balances precision and recall for uneven data.
+The accuracy measures overall correctness and, calculated the correct prediction across all samples. The dataset has 63\% benign and 37\% malignant which may cause errors since accuracy does not account for imbalanced data. Precision indicates the proportion of malignant that were actually malignant. SVM's precision produced 0 FP so the every patient classified as malignant, truly had cancer which avoided unnecessary costs. Recall is the key measure as false negatives have a direct impact and leave cancer patients untreated. Recall was used to check the model's ability to identify all malignant cases. The F-1 score balances precision and recall for uneven data. From figure 2, SVM had the highest F1 score and greatest recall. Hence, SVM is the best performing model for this data series as F1 suggests balance between over diagnosis and missing cancerous cells.
 
-Through the feature analysis, the model suggests concave points 3 played the biggest factor in classifying benign and malignant cells. T
-
-
-
-
+Through the feature analysis, the model suggests concave points 3 played the biggest factor in classifying benign and malignant cells and exhibit abnormal shapes. Features labelled with 1 and 3 were more spread out when a scatter graph was used to show distribution of data per feature. Features labelled 3 appeared to have large variances and can be considered worst values. The feature analysis supports our assumption that averages cells do not indicate cancer but abnormal cells do.
+Size metrics appeared frequently suggesting tumour size and shape are strong indicators of cancer. The test set of the model supports figure 1 which shows high correlation between concave and compactness from the data set.
